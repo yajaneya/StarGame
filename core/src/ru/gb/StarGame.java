@@ -1,35 +1,45 @@
 package ru.gb;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 public class StarGame extends ApplicationAdapter {
-	SpriteBatch batch;
-	Texture img;
+	private SpriteBatch batch;
+	private TextureRegion region;
+	private Texture img;
+	private Texture fon;
 
-	private int x = 0;
-	
+	private float x, y;
+
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
+		fon = new Texture("fon.jpg");
 		img = new Texture("badlogic.jpg");
+		region = new TextureRegion(img, 10, 10, 200, 200);
 	}
 
 	@Override
 	public void render () {
 		x++;
-		ScreenUtils.clear(0.4f, 0.24f, 0.51f, 1);
+		ScreenUtils.clear(0.33f, 0.45f, 0.68f, 1);
 		batch.begin();
-		batch.draw(img, x, 0);
-		batch.setColor(0.56f, 0.32f, 0.67f, 0.5f);
-		batch.draw(img, 300, 300, 100, 100);
-		batch.setColor(1f, 1f, 1f, 0.8f);
-		batch.draw(img, 230, 50, 100, 50);
+		batch.draw(fon,0,0);
+		batch.draw(img, x, y);
+		Gdx.graphics.getHeight();
+		Gdx.graphics.getWidth();
+		batch.draw(region, 300+x*0.5f, 300+y, 150, 150);
 		batch.end();
+		if (x>200) {
+			x=0;
+			y+=10;
+		}
 	}
-	
+
 	@Override
 	public void dispose () {
 		batch.dispose();
