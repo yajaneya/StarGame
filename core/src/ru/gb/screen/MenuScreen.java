@@ -52,14 +52,14 @@ public class MenuScreen extends BaseScreen {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
           touch.set(screenX, Gdx.graphics.getHeight() - screenY);
-//          v.set(touch.cpy().sub(pos)).setLength(V_LEN);
-          v.set(touch.cpy().sub(pos)).scl(V_LEN);
+          v.set(touch.cpy().sub(pos)).setLength(V_LEN);
+//          v.set(touch.cpy().sub(pos)).scl(V_LEN);
         return false;
     }
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        pos.set(screenX, Gdx.graphics.getHeight() - screenY);
+//        pos.set(screenX, Gdx.graphics.getHeight() - screenY);
         return false;
     }
 }
