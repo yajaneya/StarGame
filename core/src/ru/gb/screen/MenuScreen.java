@@ -8,12 +8,14 @@ import ru.gb.base.BaseScreen;
 
 public class MenuScreen extends BaseScreen {
 
+    private static final float V_LEN = 1.8f;
+
     private Texture fon;
     private Texture img;
 
     private Vector2 pos;
     private Vector2 v;
-    private Vector2 purpose;
+    private Vector2 touch;
 
     @Override
     public void show() {
@@ -23,7 +25,7 @@ public class MenuScreen extends BaseScreen {
 
         pos = new Vector2();
         v = new Vector2(0,0);
-        purpose = new Vector2(0,0);
+        touch = new Vector2();
     }
 
     @Override
@@ -33,28 +35,11 @@ public class MenuScreen extends BaseScreen {
         batch.draw(fon,0,0);
         batch.draw(img, pos.x, pos.y);
         batch.end();
-
-        if (pos.equals(purpose))
-//        if ((pos.x == purpose.x) & (pos.y == purpose.y))
-            v.set(0, 0);
-        else
-            v = setSpeed(pos, purpose, 8);
-
-        pos.add(v);
-    }
-
-    private Vector2 setSpeed(Vector2 start, Vector2 finish, int step) {
-
-        int deltaX = (int) Math.abs(finish.x - start.x);
-        int deltaY = (int) Math.abs(finish.y - start.y);
-
-        int stepX = Math.min(deltaX, step);
-        int stepY = Math.min(deltaY, step);
-
-        int x = (finish.x - start.x > 0) ? stepX : -stepX;
-        int y = (finish.y - start.y > 0) ? stepY : -stepY;
-
-        return new Vector2(x,y);
+        if (touch.dst(pos) > V_LEN) {
+            pos.add(v);
+        } else {
+            pos.set(touch);
+        }
     }
 
     @Override
@@ -66,14 +51,15 @@ public class MenuScreen extends BaseScreen {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-//        pos.set(screenX, Gdx.graphics.getHeight() - screenY);
-          purpose.set(screenX, Gdx.graphics.getHeight() - screenY);
-        return super.touchDown(screenX, screenY, pointer, button);
+          touch.set(screenX, Gdx.graphics.getHeight() - screenY);
+//          v.set(touch.cpy().sub(pos)).setLength(V_LEN);
+          v.set(touch.cpy().sub(pos)).scl(V_LEN);
+        return false;
     }
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
         pos.set(screenX, Gdx.graphics.getHeight() - screenY);
-        return super.touchDragged(screenX, screenY, pointer);
+        return false;
     }
 }
