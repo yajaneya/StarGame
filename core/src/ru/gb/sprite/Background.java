@@ -8,8 +8,10 @@ import ru.gb.math.Rect;
 
 public class Background extends Sprite {
 
-    public Background (Texture texture) {
-        super(new TextureRegion(texture));
+    private static final String ICON_BG = "textures/bg.png";
+
+    public Background () {
+        super(new TextureRegion(new Texture(ICON_BG)));
     }
 
     @Override

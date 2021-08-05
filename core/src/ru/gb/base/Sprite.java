@@ -36,7 +36,6 @@ public class Sprite extends Rect {
     }
 
     public void resize (Rect worldBounds) {
-
     }
 
     public boolean touchDown(Vector2 touch, int pointer, int button) {
@@ -47,7 +46,7 @@ public class Sprite extends Rect {
         return false;
     }
 
-    public boolean touchDragged(Vector2 touch, int pointer, int button) {
+    public boolean touchDragged(Vector2 touch, int pointer) {
         return false;
     }
 
