@@ -1,7 +1,6 @@
 package ru.gb.sprite;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
@@ -26,33 +25,24 @@ public class Logo extends Sprite {
 
     @Override
     public void resize(Rect worldBounds) {
-        setHeightProportion(SIZE_LOGO * worldBounds.getHeight());
-        pos.set(worldBounds.pos);
+        setHeightProportion(SIZE_LOGO);
     }
 
     @Override
-    public void draw(SpriteBatch batch) {
-        System.out.println("Speed: " + v.x + ", " + v.y);
+    public void update(float delta) {
+        super.update(delta);
         if (pos.dst(touch) > V_STEP) {
             pos.add(v);
         } else {
             pos.set(touch);
         }
-        super.draw(batch);
     }
 
     @Override
     public boolean touchDown(Vector2 touch, int pointer, int button) {
         System.out.println("Logo mouse");
-        this.touch = touch;
-        v = touch.cpy().sub(pos).scl(V_STEP);
-
-
-        System.out.println("Position: " + pos.x + ", " + pos.y);
-        System.out.println("Purpose: " + touch.x + ", " + touch.y);
-        System.out.println("Speed: " + v.x + ", " + v.y);
-
-//        pos.set(touch);
+        this.touch.set(touch);
+        v.set(touch.cpy().sub(pos).scl(V_STEP));
         return false;
     }
 
