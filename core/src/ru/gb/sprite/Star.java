@@ -10,8 +10,6 @@ import ru.gb.math.Rnd;
 public class Star extends Sprite {
 
     private Vector2 v;
-    private Rect worldBounds;
-
 
     public Star(TextureAtlas atlas) {
         super(atlas.findRegion("star"));

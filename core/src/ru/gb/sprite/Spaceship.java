@@ -24,6 +24,7 @@ public class Spaceship extends Sprite {
 
     @Override
     public void resize(Rect worldBounds) {
+        this.worldBounds = worldBounds;
         super.resize(worldBounds);
         setHeightProportion(SIZE_SHIP);
     }
@@ -85,4 +86,19 @@ public class Spaceship extends Sprite {
         return false;
     }
 
+    @Override
+    protected void checkAndHandleBounds() {
+        if (getRight() < worldBounds.getLeft()) {
+            setLeft(worldBounds.getLeft()+0.05f);
+        }
+        if (getLeft() > worldBounds.getRight()) {
+            setRight(worldBounds.getRight()-0.05f);
+        }
+        if (getTop() < worldBounds.getBottom()) {
+            setBottom(worldBounds.getBottom()+0.05f);
+        }
+        if (getBottom() > worldBounds.getTop()) {
+            setTop(worldBounds.getTop()-0.05f);
+        }
+    }
 }
