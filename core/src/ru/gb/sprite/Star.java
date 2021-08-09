@@ -26,27 +26,12 @@ public class Star extends Sprite {
 
     @Override
     public void resize(Rect worldBounds) {
-        this.worldBounds = worldBounds;
+        super.resize(worldBounds);
         float height = Rnd.nextFloat(0.005f, 0.013f);
         setHeightProportion(height);
         float x = Rnd.nextFloat(worldBounds.getLeft(), worldBounds.getRight());
         float y = Rnd.nextFloat(worldBounds.getBottom(), worldBounds.getTop());
         pos.set(x,y);
         v.set(Rnd.nextFloat(-0.005f, 0.005f), getHalfHeight()*-7);
-    }
-
-    private void checkAndHandleBounds() {
-        if (getRight() < worldBounds.getLeft()) {
-            setLeft(worldBounds.getRight());
-        }
-        if (getLeft() > worldBounds.getRight()) {
-            setRight(worldBounds.getLeft());
-        }
-        if (getTop() < worldBounds.getBottom()) {
-            setBottom(worldBounds.getTop());
-        }
-        if (getBottom() > worldBounds.getTop()) {
-            setTop(worldBounds.getBottom());
-        }
     }
 }

@@ -8,6 +8,7 @@ import ru.gb.math.Rect;
 
 public class Sprite extends Rect {
 
+    protected Rect worldBounds;
     protected float angle;
     protected float scale = 1f;
     protected TextureRegion[] regions;
@@ -40,6 +41,7 @@ public class Sprite extends Rect {
     }
 
     public void resize (Rect worldBounds) {
+        this.worldBounds = worldBounds;
     }
 
     public boolean touchDown(Vector2 touch, int pointer, int button) {
@@ -68,5 +70,20 @@ public class Sprite extends Rect {
 
     public void setScale(float scale) {
         this.scale = scale;
+    }
+
+    protected void checkAndHandleBounds() {
+        if (getRight() < worldBounds.getLeft()) {
+            setLeft(worldBounds.getRight());
+        }
+        if (getLeft() > worldBounds.getRight()) {
+            setRight(worldBounds.getLeft());
+        }
+        if (getTop() < worldBounds.getBottom()) {
+            setBottom(worldBounds.getTop());
+        }
+        if (getBottom() > worldBounds.getTop()) {
+            setTop(worldBounds.getBottom());
+        }
     }
 }
