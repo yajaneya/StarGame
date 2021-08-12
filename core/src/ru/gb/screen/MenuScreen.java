@@ -1,6 +1,7 @@
 package ru.gb.screen;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 
@@ -33,6 +34,7 @@ public class MenuScreen extends BaseScreen {
     public void show() {
         super.show();
         background = new Background();
+        music = Gdx.audio.newMusic(Gdx.files.internal("sounds/musicMenu.mp3"));
 
         atlas = new TextureAtlas("textures/menuAtlas.tpack");
         stars = new Star[STAR_COUNT];
@@ -41,6 +43,7 @@ public class MenuScreen extends BaseScreen {
         }
         exitButton = new ExitButton(atlas);
         playButton = new PlayButton(atlas, game);
+        music.play();
     }
 
     @Override
@@ -64,6 +67,7 @@ public class MenuScreen extends BaseScreen {
     public void dispose() {
         super.dispose();
         atlas.dispose();
+        music.dispose();
     }
 
     @Override
