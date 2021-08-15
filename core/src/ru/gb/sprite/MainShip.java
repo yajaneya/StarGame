@@ -1,6 +1,5 @@
 package ru.gb.sprite;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -22,8 +21,8 @@ public class MainShip extends Sprite {
 
     private final Vector2 v0 = new Vector2(0.5f, 0);
     private final Vector2 v = new Vector2();
-    private final Sound bulletSound = Gdx.audio.newSound(Gdx.files.internal("sounds/bullet.wav"));
 
+    private Sound bulletSound;
 
     private boolean pressedLeft;
     private boolean pressedRight;
@@ -41,9 +40,10 @@ public class MainShip extends Sprite {
     private int bulletTime;
     private int timeOfShoot;
 
-    public MainShip(TextureAtlas atlas, BulletPool bulletPool) {
+    public MainShip(TextureAtlas atlas, BulletPool bulletPool, Sound bulletSound) {
         super(atlas.findRegion("main_ship"), 1, 2, 2);
         this.bulletPool = bulletPool;
+        this.bulletSound = bulletSound;
         bulletRegion = atlas.findRegion("bulletMainShip");
         bulletPos = new Vector2();
         bulletV = new Vector2(0, 0.5f);
