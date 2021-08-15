@@ -1,6 +1,8 @@
 package ru.gb.sprite;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -14,9 +16,14 @@ public class MainShip extends Sprite {
     private static final float HEIGHT = 0.15f;
     private static final float BOTTOM_MARGIN = 0.05f;
     private static final int INVALID_POINTER = -1;
+    private static final int TIME_OF_BULLET_MIN = 3;
+    private static final int TIME_OF_BULLET_MAX = 60;
+
 
     private final Vector2 v0 = new Vector2(0.5f, 0);
     private final Vector2 v = new Vector2();
+    private final Sound bulletSound = Gdx.audio.newSound(Gdx.files.internal("sounds/bullet.wav"));
+
 
     private boolean pressedLeft;
     private boolean pressedRight;
@@ -31,7 +38,8 @@ public class MainShip extends Sprite {
     private Vector2 bulletV;
     private float bulletHeight;
     private int bulletDamage;
-
+    private int bulletTime;
+    private int timeOfShoot;
 
     public MainShip(TextureAtlas atlas, BulletPool bulletPool) {
         super(atlas.findRegion("main_ship"), 1, 2, 2);
@@ -41,6 +49,8 @@ public class MainShip extends Sprite {
         bulletV = new Vector2(0, 0.5f);
         bulletHeight = 0.01f;
         bulletDamage = 1;
+        bulletTime = 0;
+        timeOfShoot = 30;
     }
 
     @Override
@@ -56,6 +66,12 @@ public class MainShip extends Sprite {
         super.update(delta);
         pos.mulAdd(v,delta);
         checkAndHandleBounds();
+        if (bulletTime < timeOfShoot) {
+            bulletTime++;
+        } else {
+            shoot();
+            bulletTime = 0;
+        }
 //        checkAndHandleBounds1();
     }
 
@@ -121,6 +137,16 @@ public class MainShip extends Sprite {
             case Input.Keys.UP:
                 shoot();
                 break;
+            case Input.Keys.PAGE_UP:
+                if (timeOfShoot > TIME_OF_BULLET_MIN)
+                    timeOfShoot--;
+                System.out.println("timeOfShoot: " + timeOfShoot);
+                break;
+            case Input.Keys.PAGE_DOWN:
+                if (timeOfShoot < TIME_OF_BULLET_MAX)
+                    timeOfShoot++;
+                System.out.println("timeOfShoot: " + timeOfShoot);
+               break;
          }
         return false;
     }
@@ -185,5 +211,6 @@ public class MainShip extends Sprite {
         Bullet bullet = bulletPool.obtain();
         bulletPos.set(pos.x, pos.y + getHalfHeight());
         bullet.set(this, bulletRegion, bulletPos, bulletV, bulletHeight, worldBounds, bulletDamage);
+        bulletSound.play(0.05f);
     }
 }
