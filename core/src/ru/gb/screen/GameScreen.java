@@ -8,9 +8,11 @@ import com.badlogic.gdx.math.Vector2;
 import ru.gb.base.BaseScreen;
 import ru.gb.math.Rect;
 import ru.gb.pool.BulletPool;
+import ru.gb.pool.EnemyPool;
 import ru.gb.sprite.Background;
 import ru.gb.sprite.MainShip;
 import ru.gb.sprite.Star;
+import ru.gb.utils.EnemyEmitter;
 
 public class GameScreen extends BaseScreen {
 
@@ -22,9 +24,13 @@ public class GameScreen extends BaseScreen {
 
     private Star[] stars;
     private BulletPool bulletPool;
+    private EnemyPool enemyPool;
     private MainShip mainShip;
 
+    private Sound bulletSound;
     private Sound lazerSound;
+
+    private EnemyEmitter enemyEmitter;
 
     @Override
     public void show() {
@@ -42,7 +48,12 @@ public class GameScreen extends BaseScreen {
             stars[i] = new Star(atlas);
         }
         bulletPool = new BulletPool();
+        enemyPool = new EnemyPool(worldBounds, bulletPool);
+
         mainShip = new MainShip(atlas, bulletPool, lazerSound);
+
+        bulletSound = Gdx.audio.newSound(Gdx.files.internal("sounds/bullet.wav"));
+        enemyEmitter = new EnemyEmitter(worldBounds, bulletSound, enemyPool, atlas);
     }
 
     @Override
@@ -68,6 +79,7 @@ public class GameScreen extends BaseScreen {
         super.dispose();
         atlas.dispose();
         bulletPool.dispose();
+        enemyPool.dispose();
         music.dispose();
         lazerSound.dispose();
     }
@@ -108,10 +120,13 @@ public class GameScreen extends BaseScreen {
         }
         mainShip.update(delta);
         bulletPool.updateActiveSprites(delta);
+        enemyPool.updateActiveSprites(delta);
+        enemyEmitter.generate(delta);
     }
 
     private void freeAllDestroyed() {
         bulletPool.freeAllDestroyedActiveSprites();
+        enemyPool.freeAllDestroyedActiveSprites();
     }
 
     private void draw() {
@@ -122,6 +137,7 @@ public class GameScreen extends BaseScreen {
         }
         mainShip.draw(batch);
         bulletPool.drawActiveSprites(batch);
+        enemyPool.drawActiveSprites(batch);
         batch.end();
     }
 }
