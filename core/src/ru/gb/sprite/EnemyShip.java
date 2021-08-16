@@ -40,7 +40,8 @@ public class EnemyShip extends Ship {
             Sound bulletSound,
             float reloadInterval,
             float height,
-            int hp
+            int hp,
+            float dd
     ) {
         this.regions = regions;
         this.v0.set(v0);
@@ -54,5 +55,6 @@ public class EnemyShip extends Ship {
         this.hp = hp;
         v.set(0, -4f);
         bulletPos.set(pos.x, pos.y + getHalfHeight());
+        this.distroyDistance = dd;
     }
 }

@@ -5,11 +5,15 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 
+import java.util.List;
+
 import ru.gb.base.BaseScreen;
 import ru.gb.math.Rect;
 import ru.gb.pool.BulletPool;
 import ru.gb.pool.EnemyPool;
 import ru.gb.sprite.Background;
+import ru.gb.sprite.Bullet;
+import ru.gb.sprite.EnemyShip;
 import ru.gb.sprite.MainShip;
 import ru.gb.sprite.Star;
 import ru.gb.utils.EnemyEmitter;
@@ -17,6 +21,7 @@ import ru.gb.utils.EnemyEmitter;
 public class GameScreen extends BaseScreen {
 
     private static final int STAR_COUNT = 64;
+    private static final float DISTROY_DISTANCE_COLLISION = 0.1f;
 
     private Background background;
 
@@ -126,7 +131,36 @@ public class GameScreen extends BaseScreen {
     }
 
     private void checkCollisions() {
+        mainshipToEnemyshipCollision();
+        bulletmainshipToEnemyshipCollision();
+    }
 
+    private void mainshipToEnemyshipCollision () {
+        List<EnemyShip> enemies = enemyPool.getActiveSprites();
+        for (EnemyShip ship : enemies) {
+            if (mainShip.pos.dst(ship.pos) < DISTROY_DISTANCE_COLLISION) {
+                ship.destroy();
+            }
+        }
+    }
+
+    private void bulletmainshipToEnemyshipCollision () {
+        List<EnemyShip> enemies = enemyPool.getActiveSprites();
+        List<Bullet> bullets = bulletPool.getActiveSprites();
+        for (Bullet bullet : bullets) {
+            for (EnemyShip ship : enemies) {
+                if (bullet.pos.dst(ship.pos) < ship.getDistroyDistance()) {
+                    if (ship.getHp() == 0) {
+                        System.out.println("Ship destroyed");
+                        ship.destroy();
+                    } else {
+                        System.out.println("Hp = " + ship.getHp());
+                        ship.setHp(ship.getHp() - 1);
+                        System.out.println("Hp = " + ship.getHp());
+                    }
+                }
+            }
+        }
     }
 
     private void freeAllDestroyed() {
