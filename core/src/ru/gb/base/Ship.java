@@ -13,6 +13,7 @@ public class Ship extends Sprite {
     protected final Vector2 v0;
     protected final Vector2 v;
 
+    protected Bullet bullet;
     protected Sound bulletSound;
 
     protected Rect worldBounds;
@@ -23,6 +24,7 @@ public class Ship extends Sprite {
     protected float bulletHeight;
     protected int bulletDamage;
     protected int hp;
+    protected float distroyDistance;
 
     protected float reloadInterval;
     protected float reloadTimer;
@@ -42,6 +44,18 @@ public class Ship extends Sprite {
         bulletV = new Vector2();
     }
 
+    public int getHp() {
+        return hp;
+    }
+
+    public void setHp(int hp) {
+        this.hp = hp;
+    }
+
+    public float getDistroyDistance() {
+        return distroyDistance;
+    }
+
     @Override
     public void update(float delta) {
         super.update(delta);
@@ -54,7 +68,7 @@ public class Ship extends Sprite {
     }
 
     private void shoot() {
-        Bullet bullet = bulletPool.obtain();
+        bullet = bulletPool.obtain();
         bullet.set(this, bulletRegion, bulletPos, bulletV, bulletHeight, worldBounds, bulletDamage);
         bulletSound.play(0.05f);
     }
