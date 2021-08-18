@@ -131,36 +131,39 @@ public class GameScreen extends BaseScreen {
     }
 
     private void checkCollisions() {
-        mainshipToEnemyshipCollision();
-        bulletmainshipToEnemyshipCollision();
-    }
 
-    private void mainshipToEnemyshipCollision () {
-        List<EnemyShip> enemies = enemyPool.getActiveSprites();
-        for (EnemyShip ship : enemies) {
-            if (mainShip.pos.dst(ship.pos) < DISTROY_DISTANCE_COLLISION) {
-                ship.destroy();
+        List<EnemyShip> enemyShipList = enemyPool.getActiveSprites();
+        for (EnemyShip enemyShip : enemyShipList) {
+            if (enemyShip.isDestroyed()) {
+                continue;
+            }
+            float minDist = enemyShip.getHalfWidth() + mainShip.getHalfWidth();
+            if (mainShip.pos.dst(enemyShip.pos) <minDist) {
+                mainShip.damage(enemyShip.getBulletDamage() * 2);
+                enemyShip.destroy();
             }
         }
-    }
 
-    private void bulletmainshipToEnemyshipCollision () {
-        List<EnemyShip> enemies = enemyPool.getActiveSprites();
-        List<Bullet> bullets = bulletPool.getActiveSprites();
-        for (Bullet bullet : bullets) {
-            for (EnemyShip ship : enemies) {
-                if (bullet.pos.dst(ship.pos) < ship.getDistroyDistance()) {
-                    if (ship.getHp() == 0) {
-                        System.out.println("Ship destroyed");
-                        ship.destroy();
-                    } else {
-                        System.out.println("Hp = " + ship.getHp());
-                        ship.setHp(ship.getHp() - 1);
-                        System.out.println("Hp = " + ship.getHp());
-                    }
+        List<Bullet> bulletList = bulletPool.getActiveSprites();
+        for (Bullet bullet : bulletList) {
+            if (bullet.isDestroyed()) {
+                continue;
+            }
+            for (EnemyShip enemyShip : enemyShipList) {
+                if (enemyShip.isDestroyed() || bullet.getOwner() !=mainShip) {
+                    continue;
+                }
+                if (enemyShip.isBulletCollision(bullet)) {
+                    enemyShip.damage(bullet.getDamage());
+                    bullet.destroy();
                 }
             }
+            if (bullet.getOwner() != mainShip && mainShip.isBulletCollision(bullet)) {
+                mainShip.damage(bullet.getDamage());
+                bullet.destroy();
+            }
         }
+
     }
 
     private void freeAllDestroyed() {
