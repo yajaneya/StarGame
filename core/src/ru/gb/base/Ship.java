@@ -100,6 +100,8 @@ public abstract class Ship extends Sprite {
         boom();
     }
 
+
+
     private void shoot() {
         bullet = bulletPool.obtain();
         bullet.set(this, bulletRegion, bulletPos, bulletV, bulletHeight, worldBounds, bulletDamage);
