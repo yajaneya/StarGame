@@ -76,11 +76,12 @@ public class GameScreen extends BaseScreen {
         return mainShip;
     }
 
-    public void initialize() {
+    public void startNewGame() {
+
+        bulletPool.freeAllActiveSprites();
+        enemyPool.freeAllActiveSprites();
+        explosionPool.freeAllActiveSprites();
         mainShip.initialize();
-        bulletPool.dispose();
-        enemyPool.dispose();
-        explosionPool.dispose();
         mainShip.flushDestroy();
     }
 
@@ -119,18 +120,20 @@ public class GameScreen extends BaseScreen {
 
     @Override
     public boolean touchDown(Vector2 touch, int pointer, int button) {
-        mainShip.touchDown(touch, pointer, button);
         if (!newGameButton.isDestroyed()) {
             newGameButton.touchDown(touch, pointer, button);
+        } else {
+            mainShip.touchDown(touch, pointer, button);
         }
         return false;
     }
 
     @Override
     public boolean touchUp(Vector2 touch, int pointer, int button) {
-        mainShip.touchUp(touch, pointer, button);
         if (!newGameButton.isDestroyed()) {
             newGameButton.touchUp(touch, pointer, button);
+        } else {
+            mainShip.touchUp(touch, pointer, button);
         }
         return false;
     }

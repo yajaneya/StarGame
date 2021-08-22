@@ -12,11 +12,12 @@ import ru.gb.pool.ExplosionPool;
 
 public class MainShip extends Ship {
 
+    private static final int HP_FULL = 11;
+
     private static final float HEIGHT = 0.15f;
     private static final float BOTTOM_MARGIN = 0.05f;
     private static final int INVALID_POINTER = -1;
     private static final float RELOAD_INTERVAL = 0.2f;
-    private static final int HP_FULL = 11;
 
 
     private boolean pressedLeft;
@@ -41,7 +42,14 @@ public class MainShip extends Ship {
 
     public void initialize() {
         hp = HP_FULL;
+        pressedLeft = false;
+        pressedRight = false;
+        leftPointer = INVALID_POINTER;
+        rightPointer = INVALID_POINTER;
+        stop();
         pos.x = worldBounds.pos.x;
+        setBottom(worldBounds.getBottom() + BOTTOM_MARGIN);
+
     }
 
     @Override

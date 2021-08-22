@@ -8,7 +8,9 @@ import ru.gb.screen.GameScreen;
 
 public class NewGameButton extends BaseButton {
 
-    private static final float HEIGHT = 0.03f;
+    private static final float HEIGHT = 0.05f;
+    private static final float TOP_MARGIN = -0.009f;
+
 
     private GameScreen gameScreen;
 
@@ -20,12 +22,12 @@ public class NewGameButton extends BaseButton {
     @Override
     public void resize(Rect worldBounds) {
         setHeightProportion(HEIGHT);
-        pos.set(worldBounds.getLeft() + getHalfWidth() + HEIGHT, worldBounds.getBottom() + getHalfHeight() + HEIGHT);
+        setTop(TOP_MARGIN);
     }
 
     @Override
     public void action() {
-        gameScreen.initialize();
+        gameScreen.startNewGame();
     }
 
 }
