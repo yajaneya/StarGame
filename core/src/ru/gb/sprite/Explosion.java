@@ -9,10 +9,13 @@ import ru.gb.base.Sprite;
 public class Explosion extends Sprite {
 
     private static final float ANIMATE_INTERVAL = 0.17f;
+    private static final int DAMAGE = 1;
 
     private float animateTimer;
 
     private final Sound explosionSound;
+
+    private int damage;
 
     public Explosion(TextureAtlas atlas, Sound explosionSound) {
         super(atlas.findRegion("explosion"), 9, 9, 74);
@@ -23,6 +26,11 @@ public class Explosion extends Sprite {
         this.pos.set(pos);
         setHeightProportion(height);
         explosionSound.play();
+        this.damage = DAMAGE;
+    }
+
+    public int getDamage() {
+        return damage;
     }
 
     @Override

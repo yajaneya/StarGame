@@ -17,6 +17,7 @@ import ru.gb.pool.ExplosionPool;
 import ru.gb.sprite.Background;
 import ru.gb.sprite.Bullet;
 import ru.gb.sprite.EnemyShip;
+import ru.gb.sprite.Explosion;
 import ru.gb.sprite.GameOver;
 import ru.gb.sprite.MainShip;
 import ru.gb.sprite.NewGameButton;
@@ -228,6 +229,17 @@ public class GameScreen extends BaseScreen {
             if (bullet.getOwner() != mainShip && mainShip.isBulletCollision(bullet)) {
                 mainShip.damage(bullet.getDamage());
                 bullet.destroy();
+            }
+        }
+
+        List<Explosion> explosionsList = explosionPool.getActiveSprites();
+        for (Explosion explosion : explosionsList) {
+            if (explosion.isDestroyed()) {
+                continue;
+            }
+            float minDist = explosion.getHalfWidth() + mainShip.getHalfWidth();
+            if (mainShip.pos.dst(explosion.pos) <minDist) {
+                mainShip.damage(explosion.getDamage());
             }
         }
 
