@@ -253,6 +253,9 @@ public class GameScreen extends BaseScreen {
             float minDist = explosion.getHalfWidth() + mainShip.getHalfWidth();
             if (mainShip.pos.dst(explosion.pos) <minDist) {
                 mainShip.damage(explosion.getDamage());
+                if (mainShip.isDestroyed()) {
+                    break;
+                }
             }
         }
 
