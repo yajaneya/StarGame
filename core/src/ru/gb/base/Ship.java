@@ -59,6 +59,10 @@ public abstract class Ship extends Sprite {
         this.hp = hp;
     }
 
+    public void addHp(int hp) {
+        this.hp += hp;
+    }
+
     public float getDistroyDistance() {
         return distroyDistance;
     }
@@ -99,8 +103,6 @@ public abstract class Ship extends Sprite {
         super.destroy();
         boom();
     }
-
-
 
     private void shoot() {
         bullet = bulletPool.obtain();
