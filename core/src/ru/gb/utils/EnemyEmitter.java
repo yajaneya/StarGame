@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
+import ru.gb.enums.EnemyShips;
 import ru.gb.math.Rect;
 import ru.gb.math.Rnd;
 import ru.gb.pool.EnemyPool;
@@ -12,7 +13,10 @@ import ru.gb.sprite.EnemyShip;
 
 public class EnemyEmitter {
 
+    private EnemyShips levelShip;
+
     private static final float GENERATE_INTERVAL = 4f;
+    private static final int ENEMY_FOR_NEW_LEVEL = 8;
 
     private static final float ENEMY_SMALL_HEIGHT = 0.1f;
     private static final float ENEMY_SMALL_BULLET_HEIGHT = 0.01f;
@@ -70,13 +74,16 @@ public class EnemyEmitter {
     }
 
     public void generate(float delta, int frags) {
-        level = frags /10 + 1;
+        level = frags / ENEMY_FOR_NEW_LEVEL + 1;
         generateTimer += delta;
         if (generateTimer >= GENERATE_INTERVAL) {
             generateTimer = 0f;
             enemy = enemyPool.obtain();
             float type = (float) Math.random();
             if (type < 0.5f) {
+                if (level > 2) {
+                    enemySmallV.set(0.03f, -0.1f);
+                }
                 enemy.set(
                         enemySmallRegions,
                         enemySmallV,
@@ -87,7 +94,8 @@ public class EnemyEmitter {
                         bulletSound,
                         ENEMY_SMALL_RELOAD_INTERVAL,
                         ENEMY_SMALL_HEIGHT,
-                        ENEMY_SMALL_HP
+                        ENEMY_SMALL_HP,
+                        levelShip.SMALL
                 );
             } else if (type < 0.8f) {
                 enemy.set(
@@ -100,7 +108,8 @@ public class EnemyEmitter {
                         bulletSound,
                         ENEMY_MEDIUM_RELOAD_INTERVAL,
                         ENEMY_MEDIUM_HEIGHT,
-                        ENEMY_MEDIUM_HP
+                        ENEMY_MEDIUM_HP,
+                        levelShip.MEDIUM
                 );
             } else {
                 enemy.set(
@@ -113,7 +122,8 @@ public class EnemyEmitter {
                         bulletSound,
                         ENEMY_BIG_RELOAD_INTERVAL,
                         ENEMY_BIG_HEIGHT,
-                        ENEMY_BIG_HP
+                        ENEMY_BIG_HP,
+                        levelShip.BIG
                 );
             }
             float posX = Rnd.nextFloat(

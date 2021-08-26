@@ -5,11 +5,14 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
 import ru.gb.base.Ship;
+import ru.gb.enums.EnemyShips;
 import ru.gb.math.Rect;
 import ru.gb.pool.BulletPool;
 import ru.gb.pool.ExplosionPool;
 
 public class EnemyShip extends Ship {
+
+    private EnemyShips levelShip;
 
     public EnemyShip(Rect worldBounds, BulletPool bulletPool, ExplosionPool explosionPool) {
         super();
@@ -42,7 +45,8 @@ public class EnemyShip extends Ship {
             Sound bulletSound,
             float reloadInterval,
             float height,
-            int hp
+            int hp,
+            EnemyShips level
     ) {
         this.regions = regions;
         this.v0.set(v0);
@@ -55,6 +59,7 @@ public class EnemyShip extends Ship {
         setHeightProportion(height);
         this.hp = hp;
         v.set(0, -0.4f);
+        this.levelShip = level;
     }
 
     public void setPos (float x, float y) {
@@ -76,5 +81,9 @@ public class EnemyShip extends Ship {
     public void destroy() {
         super.destroy();
         reloadTimer = 0f;
+    }
+
+    public EnemyShips getLevelShip() {
+        return levelShip;
     }
 }
